@@ -1,6 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
+import { CONFIG } from '../shared/constants';
 
 export const Communities = new Mongo.Collection('communities');
 
@@ -9,44 +10,45 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'communities.toggleCheckPerson'({ communityId, personId, checkIn }) {
+  'communities.toggleCheckPerson': ({ communityId, personId, checkIn }) => {
     check(communityId, String);
     check(personId, String);
+    check(checkIn, Boolean);
 
+    if (!checkIn) {
+      const community = Communities.findOne({
+        _id: communityId,
+      });
 
-    // If we would like keep check data like
-    // {personId, checkInDate, checkOutDate}
-    // this should be doable with 'positnional-all' operator with one operation
-    // but mini mongo doesn't support it
-    // https://docs.mongodb.com/manual/reference/operator/update/positional-all/
-    // Communities.update({
-    //   _id: communityId, checks: [{ personId }],
-    // }, {
-    //   $set: {
-    //     'checks.$[]': {
-    //       personId,
-    //       checkInDate: Date.now(),
-    //     },
-    //   },
-    // }, {
-    //   upsert: true,
-    // });
+      const lastUserCheck = community.checks
+        .reverse()
+        .find(userCheck => personId === userCheck.personId);
+      if (
+        lastUserCheck.isCheckedIn &&
+        lastUserCheck.date > Date.now() - CONFIG.ALLOW_CHECK_OUT_TIMEOUT
+      ) {
+        throw new Error('Cannot checkout person right now');
+      }
+    }
 
     // However I think better idea is to push each record as new array item so keep track of
-    // all user check in/out in the past
-    Communities.update({
-      _id: communityId,
-    }, {
-      $push: {
-        'checks': {
-          personId,
-          isCheckedIn: checkIn,
-          date: Date.now(),
+    // user check in/out in the past
+    Communities.update(
+      {
+        _id: communityId,
+      },
+      {
+        $push: {
+          checks: {
+            personId,
+            isCheckedIn: checkIn,
+            date: Date.now(),
+          },
         },
       },
-    }, {
-      upsert: true,
-    });
+      {
+        upsert: true,
+      }
+    );
   },
 });
-
