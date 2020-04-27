@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { loadInitialData } from './initial-data';
-import peopleChecks from '../collections/peopleChecks';
+
+require('../collections/peopleChecks');
 
 Meteor.startup(() => {
   // DON'T CHANGE THE NEXT LINE

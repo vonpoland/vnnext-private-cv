@@ -1,5 +1,4 @@
 import { Mongo } from 'meteor/mongo';
-import { CONFIG } from '../shared/constants';
 import { check } from 'meteor/check';
 
 /**
@@ -18,11 +17,14 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'peopleChecks.eventStats': ({ eventId }) => {
-    console.info(eventId);
-
-    return eventId;
-  },
+  /**
+   * Insert user checkIn/Out data.
+   *
+   * @param {string} communityId
+   * @param {string} personId
+   * @param {boolean} checkIn
+   * @param {string} companyName
+   */
   'peopleChecks.insertUserCheck': ({
     communityId,
     personId,
@@ -32,25 +34,6 @@ Meteor.methods({
     check(communityId, String);
     check(personId, String);
     check(checkIn, Boolean);
-
-    // if (!checkIn) {
-    //   const userCheckIn = PeopleChecks.findOne(
-    //     {
-    //       communityId,
-    //       personId,
-    //     },
-    //     {
-    //       sort: { date: -1 },
-    //     }
-    //   );
-    //
-    //   if (
-    //     userCheckIn.isCheckedIn &&
-    //     userCheckIn.date > Date.now() - CONFIG.ALLOW_CHECK_OUT_TIMEOUT
-    //   ) {
-    //     throw new Error('Cannot checkout person right now');
-    //   }
-    // }
 
     PeopleChecks.insert({
       communityId,

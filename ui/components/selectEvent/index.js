@@ -15,19 +15,24 @@ import Select from '@material-ui/core/Select';
  * @constructor
  */
 export const SelectEvent = ({ onChange, options, selected }) => {
-  if (!options.includes(selected)) {
-    return null;
+  let selectedValue = selected;
+
+  if (!options.map(({ value }) => value).includes(selected)) {
+    selectedValue = '';
   }
   return (
-    <Select onChange={onChange} value={selected} displayEmpty>
-      {options.map(({ value, label }) => (
-        <MenuItem key={value} value={value}>
-          {label}
-        </MenuItem>
-      ))}
-    </Select>
+    <form>
+      <Select onChange={onChange} value={selectedValue} displayEmpty>
+        {options.map(({ value, label }) => (
+          <MenuItem key={value} value={value}>
+            {label}
+          </MenuItem>
+        ))}
+      </Select>
+    </form>
   );
 };
+
 SelectEvent.propTypes = {
   selected: PropTypes.string,
   onChange: PropTypes.func,

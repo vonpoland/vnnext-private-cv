@@ -10,11 +10,18 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+/**
+ * Represents may layout of app.
+ * Fetches Communities collection and passes it to Select Event selector.
+ *
+ * @param {string} seventId
+ * @returns {*}
+ * @constructor
+ */
 export const App = ({ eventId = '' }) => {
   const [appReady, setAppReady] = useState(false);
   const { communities } = useTracker(() => {
     const communityHandle = Meteor.subscribe('communities');
-
     setAppReady(communityHandle.ready());
 
     return {
@@ -22,7 +29,7 @@ export const App = ({ eventId = '' }) => {
     };
   }, []);
   const options = [
-    { label: 'Select an event', value: '' },
+    { label: TEXTS.SELECT_AN_EVENT, value: '' },
     ...communities.map(({ _id, name }) => ({
       label: name,
       value: _id,
@@ -47,15 +54,14 @@ export const App = ({ eventId = '' }) => {
   return (
     <div>
       <h1>{TEXTS.HOME_TITLE}</h1>
-      <form>
-        <SelectEvent
-          options={options}
-          selected={eventId}
-          onChange={handleEventChange}
-        />
-        <EventReport event={community} />
-        <EventPeopleList event={community} />
-      </form>
+
+      <SelectEvent
+        options={options}
+        selected={eventId}
+        onChange={handleEventChange}
+      />
+      <EventReport event={community} />
+      <EventPeopleList event={community} />
     </div>
   );
 };
