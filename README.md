@@ -80,7 +80,7 @@ Apply to a developer position [here](https://careers.jobscore.com/careers/pathab
 
 # How I implemented solutions / Considerations
 
-Rules I assumed when implementing solutions:
+Assumed business rules:
 - Person can be checked in/out multiple times. So it's possible that person is:
 checkIn/checkOut/checkIn again and so on.
 - UI is displaying the latest check in/out 

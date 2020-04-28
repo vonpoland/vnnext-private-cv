@@ -8,7 +8,7 @@ export const TEXTS = {
   TABLE: {
     name: 'Name',
     companyName: 'Company name',
-    title: 'title',
+    title: 'Title',
     checkInDate: 'Check-in date',
     checkOutDate: 'Check-out date',
     all: 'All',
@@ -29,4 +29,6 @@ export const SEARCHABLE_COLUMNS = [
 export const CONFIG = {
   ALLOW_CHECK_OUT_TIMEOUT: 5000,
   DEBOUNCE_INPUT_TIME: 300,
+  PAGE_SIZES: [5, 20, 50, 100],
+  DEFAULT_PAGE_SIZE: 20,
 };

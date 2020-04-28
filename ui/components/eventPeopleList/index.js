@@ -62,7 +62,7 @@ export const EventPeopleList = ({ event } = {}) => {
   const eventId = event && event._id;
   const [pagination, setPagination] = useState({
     total: 0,
-    pageSize: 5,
+    pageSize: CONFIG.DEFAULT_PAGE_SIZE,
     search: '',
     page: 0,
   });
@@ -237,10 +237,7 @@ export const EventPeopleList = ({ event } = {}) => {
                 rowsPerPage={pagination.pageSize}
                 page={pagination.page}
                 rowsPerPageOptions={[
-                  5,
-                  20,
-                  50,
-                  100,
+                  ...CONFIG.PAGE_SIZES,
                   { label: TEXTS.TABLE.all, value: -1 },
                 ]}
               />
