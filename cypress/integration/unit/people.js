@@ -1,23 +1,23 @@
 import {
-  checkedInPeople,
+  getCheckedInPeople,
   getCheckedInPeopleByCompany,
 } from '../../../shared/people';
 
-describe('people logic tests', () => {
+describe('People unit tests', () => {
   context('#checkedInPeople', () => {
     it('should handle empty input', () => {
-      expect(checkedInPeople()).to.eql([]);
+      expect(getCheckedInPeople()).to.eql([]);
     });
 
     it('should check in person', () => {
       expect(
-        checkedInPeople([{ _id: 1, personId: 1, isCheckedIn: true }])
+        getCheckedInPeople([{ _id: 1, personId: 1, isCheckedIn: true }])
       ).to.eql([{ _id: 1, personId: 1, isCheckedIn: true }]);
     });
 
     it('should check out person', () => {
       expect(
-        checkedInPeople([
+        getCheckedInPeople([
           { _id: 1, personId: 1, isCheckedIn: true },
           { _id: 2, personId: 1, isCheckedIn: false },
         ])
@@ -26,7 +26,7 @@ describe('people logic tests', () => {
 
     it('should check in person again', () => {
       expect(
-        checkedInPeople([
+        getCheckedInPeople([
           { _id: 1, personId: 1, isCheckedIn: true },
           { _id: 2, personId: 1, isCheckedIn: false },
           { _id: 3, personId: 1, isCheckedIn: true },
@@ -36,7 +36,7 @@ describe('people logic tests', () => {
 
     it('should check in multiple person', () => {
       expect(
-        checkedInPeople([
+        getCheckedInPeople([
           { _id: 1, personId: 1, isCheckedIn: true },
           { _id: 3, personId: 2, isCheckedIn: true },
         ])

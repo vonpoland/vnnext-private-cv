@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { getCheckedInPeopleForEvent } from '../../../shared/people';
+import { getCheckedInStatsForEvent } from '../../../shared/people';
 import { PeopleCount } from '../../../collections/people';
 import { TEXTS } from '../../../shared/constants';
 import { handleEmpty } from '../../format';
@@ -29,7 +29,7 @@ export const EventReport = ({ event }) => {
     const {
       checkedInPeopleByCompany,
       checkedInPeople,
-    } = getCheckedInPeopleForEvent(checks);
+    } = getCheckedInStatsForEvent(checks);
 
     setStats({
       ...stats,

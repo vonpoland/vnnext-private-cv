@@ -33,7 +33,7 @@ export function getCheckedInPeopleByCompany(checkedInPeople = []) {
  * @param {Array} checks
  * @returns {Array}
  */
-export function checkedInPeople(checks = []) {
+export function getCheckedInPeople(checks = []) {
   return checks.reduce((allChecks, nextCheck) => {
     const previousCheck = allChecks.find(
       ({ personId, _id }) =>
@@ -58,8 +58,8 @@ export function checkedInPeople(checks = []) {
  * @param {Array} checks
  * @returns {{checkedInPeople: Array, checkedInPeopleByCompany: Array}}
  */
-export function getCheckedInPeopleForEvent(checks = []) {
-  const checkedInPeople = checkedInPeople(checks);
+export function getCheckedInStatsForEvent(checks = []) {
+  const checkedInPeople = getCheckedInPeople(checks);
 
   return {
     checkedInPeople,
