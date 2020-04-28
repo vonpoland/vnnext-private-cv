@@ -83,7 +83,7 @@ Apply to a developer position [here](https://careers.jobscore.com/careers/pathab
 Assumed business rules:
 - Person can be checked in/out multiple times. So it's possible that person is:
 checkIn/checkOut/checkIn again and so on.
-- UI is displaying the latest check in/out 
+- UI is displaying the latest check in/out
 - Added filtering and pagination for users.
 
 Added new collection:
@@ -95,4 +95,10 @@ Added new collection:
   {string} companyName
 ```
 
+# Deployment
 
+Custom deployment was made here: `http://104.248.41.129:8888/`
+`https://guide.meteor.com/deployment.html#custom-deployment`
+
+App lifecycle is managed by Passenger Phusion
+`https://www.phusionpassenger.com/library/deploy/standalone/deploy/meteor/`
