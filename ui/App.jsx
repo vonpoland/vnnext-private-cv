@@ -10,6 +10,8 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+export const Header = () => <h1>{TEXTS.HOME_TITLE}</h1>;
+
 /**
  * Represents may layout of app.
  * Fetches Communities collection and passes it to Select Event selector.
@@ -53,8 +55,6 @@ export const App = ({ eventId = '' }) => {
 
   return (
     <div>
-      <h1>{TEXTS.HOME_TITLE}</h1>
-
       <SelectEvent
         options={options}
         selected={eventId}
