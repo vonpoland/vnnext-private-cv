@@ -11,7 +11,7 @@ export function formatCompanyName({ companyName }) {
 }
 
 export function formatDate(date) {
-  return format(new Date(date), 'MM/dd/yyyy');
+  return format(new Date(date), 'MM/dd/yyyy,HH:mm');
 }
 
 export function formatCheckInDate(checkInfo = []) {

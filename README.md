@@ -102,3 +102,10 @@ Custom deployment was made here: `http://104.248.41.129:8888/`
 
 App lifecycle is managed by Passenger Phusion
 `https://www.phusionpassenger.com/library/deploy/standalone/deploy/meteor/`
+
+# New/updated dependencies
+Meteor updated most dependencies.
+Added new ones:
+- react-meteor-data@2.1.0: Set exact version to use `useTracker` method.
+- ostrio:flow-router-extra: Package responsible for app routing.
+- tmeasday:publish-counts: Package used to stoare and publish other collection counts.

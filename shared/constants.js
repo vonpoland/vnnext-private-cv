@@ -14,7 +14,7 @@ export const TEXTS = {
     all: 'All',
   },
   SUMMARY: 'Summary',
-  SUMMARY_PEOPLE_IN_THE_EVENT: 'People in the event right now',
+  SUMMARY_PEOPLE_IN_THE_EVENT: 'People in the event right now:',
   SUMMARY_PEOPLE_BY_COMPANY: 'People by company in the event right now:',
   SUMMARY_PEOPLE_NOT_CHECKED_IN: 'People not checked-in:',
 };
