@@ -5,8 +5,10 @@ import PropTypes from 'prop-types';
 
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { PeopleChecks } from '../../../collections/peopleChecks';
+import { getCheckedInPeopleForEvent } from '../../../shared/people';
 import { PeopleCount } from '../../../collections/people';
+import { TEXTS } from '../../../shared/constants';
+import { handleEmpty } from '../../format';
 
 export const EventReport = ({ event }) => {
   const [stats, setStats] = useState({ checkedInPeopleByCompany: [] });
@@ -19,46 +21,10 @@ export const EventReport = ({ event }) => {
     Meteor.subscribe('peopleChecks', { eventId: event._id });
     Meteor.subscribe('peopleCountSubscribe', { eventId: event._id });
 
-    const checks = PeopleChecks.find({
-      communityId: event._id,
-    }).fetch();
-
-    const checkedInPeople = checks.reduce((allChecks, nextCheck) => {
-      const previousCheck = allChecks.find(
-        ({ personId, _id }) =>
-          _id !== nextCheck._id && nextCheck.personId === personId
-      );
-
-      if (previousCheck) {
-        allChecks.splice(allChecks.indexOf(previousCheck), 1);
-      }
-
-      if (nextCheck.isCheckedIn) {
-        allChecks.push(nextCheck);
-      }
-
-      return allChecks;
-    }, []);
-    const checkedInPeopleByCompany = checkedInPeople
-      .reduce((companyCheckIns, nextCheckIn) => {
-        const company = companyCheckIns.find(
-          ({ companyName }) => nextCheckIn.companyName === companyName
-        );
-
-        if (!company) {
-          if (nextCheckIn.companyName) {
-            companyCheckIns.push({
-              companyName: nextCheckIn.companyName,
-              count: 1,
-            });
-          }
-        } else {
-          company.count++;
-        }
-
-        return companyCheckIns;
-      }, [])
-      .sort((a, b) => (a.count > b.count ? -1 : 1));
+    const {
+      checkedInPeopleByCompany,
+      checkedInPeople,
+    } = getCheckedInPeopleForEvent(event._id);
 
     setStats({
       ...stats,
@@ -85,18 +51,21 @@ export const EventReport = ({ event }) => {
       elevation={3}
       style={{ padding: 10, marginBottom: 10, marginTop: 10 }}
     >
-      <Typography variant="h5">Summary</Typography>
+      <Typography variant="h5">{TEXTS.SUMMARY}</Typography>
       <Typography>
-        People in the event right now {stats.checkedInPeopleCount}
+        {TEXTS.SUMMARY_PEOPLE_IN_THE_EVENT} {stats.checkedInPeopleCount}
       </Typography>
       <Typography>
-        People by company in the event right now:
-        {stats.checkedInPeopleByCompany
-          .map(company => `${company.companyName} (${company.count})`)
-          .join(', ')}
+        {TEXTS.SUMMARY_PEOPLE_BY_COMPANY}{' '}
+        {handleEmpty(TEXTS.NA)(
+          stats.checkedInPeopleByCompany
+            .map(company => `${company.companyName} (${company.count})`)
+            .join(', ')
+        )}
       </Typography>
       <Typography>
-        People not checked-in: {stats.peopleCount - stats.checkedInPeopleCount}
+        {TEXTS.SUMMARY_PEOPLE_NOT_CHECKED_IN}{' '}
+        {stats.peopleCount - stats.checkedInPeopleCount}
       </Typography>
     </Paper>
   );

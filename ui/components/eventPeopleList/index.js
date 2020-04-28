@@ -1,11 +1,20 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 import { People, PeopleCount } from '../../../collections/people';
 import { PeopleChecks } from '../../../collections/peopleChecks';
 import { Meteor } from 'meteor/meteor';
-import { format } from 'date-fns';
 import { CONFIG, TEXTS } from '../../../shared/constants';
 import debounce from 'lodash.debounce';
+import { EventPerson } from '../eventPerson';
+import PropTypes from 'prop-types';
+
+import {
+  formatCompanyName,
+  formatCheckInDate,
+  formatCheckOutDate,
+  formatTitle,
+  handleEmpty,
+} from '../../format';
 
 // ui stuff
 import Table from '@material-ui/core/Table';
@@ -16,114 +25,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
-import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
-
-/** Format display data * */
-
-function formatName({ firstName, lastName }) {
-  return `${firstName} ${lastName}`;
-}
-
-function formatCompanyName({ companyName }) {
-  return companyName;
-}
-
-function formatDate(date) {
-  return format(new Date(date), 'MM/dd/yyyy');
-}
-
-function formatCheckInDate(checkInfo = []) {
-  const lastCheckIn =
-    checkInfo && checkInfo.find(({ isCheckedIn }) => isCheckedIn);
-
-  return lastCheckIn && formatDate(lastCheckIn.date);
-}
-
-function formatCheckOutDate(checkInfo = []) {
-  const lastCheckOut =
-    checkInfo && checkInfo.find(({ isCheckedIn }) => !isCheckedIn);
-
-  return lastCheckOut && formatDate(lastCheckOut.date);
-}
-
-function formatTitle({ title }) {
-  return title;
-}
-
-function handleEmpty(emptyText) {
-  return text => text || emptyText;
-}
-
-// update person
-function toggleCheckIn(person) {
-  const { communityId, id, isCheckedIn } = person;
-
-  // person.isDirty = true;
-  Meteor.call('peopleChecks.insertUserCheck', {
-    communityId,
-    personId: id,
-    companyName: person.companyName,
-    checkIn: !isCheckedIn,
-  });
-}
-
-// Handle person check in/out button.
-const PersonItem = person => {
-  const isPersonCheckedIn = person.isCheckedIn;
-  const name = formatName(person);
-  const variant = isPersonCheckedIn ? 'contained' : 'outlined';
-  const checkType = isPersonCheckedIn ? TEXTS.OUT : TEXTS.IN;
-  const allowedToCheckOut =
-    isPersonCheckedIn &&
-    person.checkInfo.date + CONFIG.ALLOW_CHECK_OUT_TIMEOUT < Date.now();
-  const [canCheckout, setCheckout] = useState(allowedToCheckOut);
-
-  useEffect(() => {
-    if (isPersonCheckedIn && !allowedToCheckOut) {
-      setCheckout(false);
-      setTimeout(() => setCheckout(true), CONFIG.ALLOW_CHECK_OUT_TIMEOUT);
-    }
-  }, [isPersonCheckedIn, allowedToCheckOut]);
-
-  const prefixText =
-    canCheckout || !isPersonCheckedIn
-      ? `${TEXTS.CHECKPREFIX}${checkType} `
-      : '';
-  const buttonText = `${prefixText}${name}`;
-  const deps = [
-    variant,
-    buttonText,
-    name,
-    canCheckout,
-    isPersonCheckedIn,
-    person._id,
-    person.checkInfo && person.checkInfo._id,
-  ];
-  // Memoize button so it doesn't do necessary renders.
-  // However minimongo loads items in chunks so it might be nice to investigate material-ui table
-  // and useMemo for each row.
-  return useMemo(
-    () => (
-      <Button
-        disabled={isPersonCheckedIn && !canCheckout}
-        onClick={() => toggleCheckIn(person)}
-        style={{ textTransform: 'none' }}
-        color="primary"
-        variant={variant}
-      >
-        {buttonText}
-      </Button>
-    ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [deps]
-  );
-};
 
 /**
  * Get check info. It reverts check array .
@@ -227,7 +134,7 @@ export const EventPeopleList = ({ event } = {}) => {
     {
       title: TEXTS.TABLE.name,
       field: 'name',
-      render: person => <PersonItem {...person} />,
+      render: person => <EventPerson {...person} />,
     },
     { title: TEXTS.TABLE.companyName, field: 'companyDisplayName' },
     { title: TEXTS.TABLE.title, field: 'title' },
@@ -342,4 +249,8 @@ export const EventPeopleList = ({ event } = {}) => {
       </TableContainer>
     </Paper>
   );
+};
+
+EventPeopleList.propTypes = {
+  event: PropTypes.object,
 };
