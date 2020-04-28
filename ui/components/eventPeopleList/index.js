@@ -182,6 +182,7 @@ export const EventPeopleList = ({ event } = {}) => {
         <Typography variant="h5">{event.name}</Typography>
         <form onSubmit={e => e.preventDefault()} noValidate autoComplete="off">
           <TextField
+            id="searchEventInput"
             label="Search"
             onChange={({ target }) => onSearchChange(target.value)}
             InputProps={{

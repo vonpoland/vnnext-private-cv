@@ -77,3 +77,11 @@ The page needs to be reactive -- no refresh should be needed to display the late
 ## How to delivery your challenge
 
 Apply to a developer position [here](https://careers.jobscore.com/careers/pathableinc); there is a field for including a link to your zipped repository.
+
+# How I implemented solutions / Considerations
+
+Rules I assumed when implementing solutions:
+- Person can be checked in/out multiple times. So it's possible that person is:
+checkIn/checkOut/checkIn again and so on.
+- UI is displaying the latest check in/out 
+- Added filtering and pagination for users.

@@ -1,12 +1,10 @@
-import { PeopleChecks } from '../collections/peopleChecks';
-
 /**
  * Get checked in people grouped by company.
  *
  * @param {Array} checkedInPeople
  * @returns {Array}
  */
-function getCheckedInPeopleByCompany(checkedInPeople) {
+export function getCheckedInPeopleByCompany(checkedInPeople = []) {
   return checkedInPeople
     .reduce((companyCheckIns, nextCheckIn) => {
       const company = companyCheckIns.find(
@@ -30,18 +28,13 @@ function getCheckedInPeopleByCompany(checkedInPeople) {
 }
 
 /**
- * Get checked in people for event.
- * Get checked in people for event grouped by company.
+ * Get checked in people
  *
- * @param {string} eventId
- * @returns {{checkedInPeople: Array, checkedInPeopleByCompany: Array}}
+ * @param {Array} checks
+ * @returns {Array}
  */
-export function getCheckedInPeopleForEvent(eventId) {
-  const checks = PeopleChecks.find({
-    communityId: eventId,
-  }).fetch();
-
-  const checkedInPeople = checks.reduce((allChecks, nextCheck) => {
+export function checkedInPeople(checks = []) {
+  return checks.reduce((allChecks, nextCheck) => {
     const previousCheck = allChecks.find(
       ({ personId, _id }) =>
         _id !== nextCheck._id && nextCheck.personId === personId
@@ -57,6 +50,16 @@ export function getCheckedInPeopleForEvent(eventId) {
 
     return allChecks;
   }, []);
+}
+/**
+ * Get checked in people for event.
+ * Get checked in people for event grouped by company.
+ *
+ * @param {Array} checks
+ * @returns {{checkedInPeople: Array, checkedInPeopleByCompany: Array}}
+ */
+export function getCheckedInPeopleForEvent(checks = []) {
+  const checkedInPeople = checkedInPeople(checks);
 
   return {
     checkedInPeople,

@@ -9,6 +9,7 @@ import { getCheckedInPeopleForEvent } from '../../../shared/people';
 import { PeopleCount } from '../../../collections/people';
 import { TEXTS } from '../../../shared/constants';
 import { handleEmpty } from '../../format';
+import { PeopleChecks } from '../../../collections/peopleChecks';
 
 export const EventReport = ({ event }) => {
   const [stats, setStats] = useState({ checkedInPeopleByCompany: [] });
@@ -21,10 +22,14 @@ export const EventReport = ({ event }) => {
     Meteor.subscribe('peopleChecks', { eventId: event._id });
     Meteor.subscribe('peopleCountSubscribe', { eventId: event._id });
 
+    const checks = PeopleChecks.find({
+      communityId: event._id,
+    }).fetch();
+
     const {
       checkedInPeopleByCompany,
       checkedInPeople,
-    } = getCheckedInPeopleForEvent(event._id);
+    } = getCheckedInPeopleForEvent(checks);
 
     setStats({
       ...stats,
