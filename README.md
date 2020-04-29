@@ -77,3 +77,35 @@ The page needs to be reactive -- no refresh should be needed to display the late
 ## How to delivery your challenge
 
 Apply to a developer position [here](https://careers.jobscore.com/careers/pathableinc); there is a field for including a link to your zipped repository.
+
+# How I implemented solution / Considerations
+
+Assumed business rules:
+- Person can be checked in/out multiple times. So it's possible that person is:
+checkIn/checkOut/checkIn again and so on.
+- UI is displaying the latest check in/out
+- Added filtering and pagination for users.
+
+Added new collection:
+- peopleChecks `collections/peopleChecks.js`
+```
+  {string} communityId
+  {string} personId
+  {boolean} checkIn
+  {string} companyName
+```
+
+# Deployment
+
+Custom deployment was made here: `http://104.248.41.129:8888/`
+`https://guide.meteor.com/deployment.html#custom-deployment`
+
+App lifecycle is managed by Passenger Phusion
+`https://www.phusionpassenger.com/library/deploy/standalone/deploy/meteor/`
+
+# New/updated dependencies
+Meteor updated most dependencies.
+Added new ones:
+- react-meteor-data@2.1.0: Set exact version to use `useTracker` method.
+- ostrio:flow-router-extra: Package responsible for app routing.
+- tmeasday:publish-counts: Package used to stoare and publish other collection counts.

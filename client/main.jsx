@@ -1,8 +1,10 @@
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
+import { Header } from '../ui/App';
 import { render } from 'react-dom';
-import { App } from '../ui/App';
+
+require('./router');
 
 Meteor.startup(() => {
-  render(<App />, document.getElementById('app'));
+  // This could be removed and put inside App.jsx but I left it here so test will see H1 component immediately.
+  render(<Header />, document.getElementById('app'));
 });
