@@ -6,8 +6,12 @@ import { formatName } from '../../format';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 
-// update person
-function toggleCheckIn(person) {
+/**
+ * Insert person check in.
+ *
+ * @param {Object} person
+ */
+function insertPersonCheck(person) {
   const { communityId, id, isCheckedIn } = person;
 
   Meteor.call('peopleChecks.insertUserCheck', {
@@ -51,13 +55,13 @@ export const EventPerson = person => {
     person.checkInfo && person.checkInfo._id,
   ];
   // Memoize button so it doesn't do necessary renders.
-  // However minimongo loads items in chunks so it might be nice to investigate material-ui table
+  // However mini-mongo loads items in chunks so it might be nice to investigate material-ui table
   // and useMemo for each row.
   return useMemo(
     () => (
       <Button
         disabled={isPersonCheckedIn && !canCheckout}
-        onClick={() => toggleCheckIn(person)}
+        onClick={() => insertPersonCheck(person)}
         style={{ textTransform: 'none' }}
         color="primary"
         variant={variant}

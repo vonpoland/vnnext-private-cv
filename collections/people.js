@@ -7,6 +7,10 @@ export const People = new Mongo.Collection('people');
 export const PeopleCount = Counts;
 
 if (Meteor.isServer) {
+  /**
+   * Publish people collection.
+   *
+   */
   Meteor.publish('people', ({ eventId, limit, skip, search }) =>
     People.find(
       {
@@ -19,6 +23,9 @@ if (Meteor.isServer) {
     )
   );
 
+  /**
+   * Publish people count.
+   */
   Meteor.publish('peopleCountSubscribe', function publishPeopleCount({
     eventId,
   }) {
@@ -32,9 +39,10 @@ if (Meteor.isServer) {
   Meteor.methods({
     peopleCount: ({ eventId }) => People.find({ communityId: eventId }).count(),
     /**
-     * This is not need as I misunderstood requirements.
-     * The 'People by company in the event right now' requirement means checked-in people grouped by company.
-     * However I initially thought that we need to group any people by company. But leaving this code for reference.
+     * This code is not used as I initially misunderstood requirements.
+     *
+     * The 'People by company in the event right now' requirement means CHECKED-IN people grouped by company.
+     * However I thought that we need to group ANY people by company. But leaving this code for reference.
      * @param {string} eventId
      * @returns {Promise<*>}
      */

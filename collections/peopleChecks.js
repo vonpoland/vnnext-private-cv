@@ -2,13 +2,16 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
 /**
- * Add new collection which holds user check in dates.
+ * PeopleChecks collection which holds user check in/out dates.
  *
  * @type {Mongo.Collection}
  */
 export const PeopleChecks = new Mongo.Collection('peopleChecks');
 
 if (Meteor.isServer) {
+  /**
+   * Get people checks by eventId.
+   */
   Meteor.publish('peopleChecks', ({ eventId }) =>
     PeopleChecks.find({
       communityId: eventId,
