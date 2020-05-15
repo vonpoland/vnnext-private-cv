@@ -1,21 +1,10 @@
-# Pathable Code Challenge
-
-Do you want to join Pathable as a developer? Great. Read this document and then submit your solution. Good luck.
+# Meteor code challenge 
 
 ## Machine setup
 
 - [Install Meteor](https://www.meteor.com/install)
 
-## Challenge setup
-
-### Repository setup
-
-Please following the instructions here exactly. Getting setup correctly is part of the challenge! ;)
-
-- This git repository needs to be used as your initial state.
-- Your solution should not be public.
-- When you are done zip your repository and send us a link with proper access to download it.
-  - It's better to remove node_modules and .meteor/local before zipping it.
+## Setup
 
 ### How to install dependencies
 
@@ -73,10 +62,6 @@ The page needs to be reactive -- no refresh should be needed to display the late
 
 - An automatic process will check your solution -- please follow the requirements as close as possible. Only submissions that pass the tests will be considered;
 - We are not going to answer any questions about this challenge, so that all submissions can be fairly compared.
-
-## How to delivery your challenge
-
-Apply to a developer position [here](https://careers.jobscore.com/careers/pathableinc); there is a field for including a link to your zipped repository.
 
 # How I implemented solutions / Considerations
 
